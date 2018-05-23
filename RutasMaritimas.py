@@ -158,10 +158,9 @@ class Ventana(QMainWindow, form_class):
         y el peso de la arista como tal, el usuario debera digitar el
         nombre del archivo a guardarse, y la extension .txt o .bin
         '''
-        nameTree = QFileDialog.getSaveFileName(self,
-                                                     "Guardar fichero",
-                                                     "/home/carlos/Escritorio",
-                                                     "(*.txt)")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        nameTree, _ = QFileDialog.getOpenFileName(self,"QFileDialog.getOpenFileName()", "","Archivos de Texto (*.txt)", options=options)
         if nameTree:
             writeTree = open(nameTree, 'w') # Indicamos el valor 'w'.
             writeTree.write(str(len(self.puntos)) + '\n')
@@ -190,10 +189,12 @@ class Ventana(QMainWindow, form_class):
         y el peso de la arista como tal, el usuario debera digitar el
         nombre del archivo a guardarse, y la extension .txt o .bin
         '''
-        nameTree = QFileDialog.getSaveFileName(self,
-                                                     "Guardar fichero",
-                                                     "/home/carlos/Escritorio",
-                                                     "(*.bin)")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        nameTree, _ = QFileDialog.getOpenFileName(
+            self,"QFileDialog.getOpenFileName()",
+            "","Archivos Binarios (*.bin)",
+            options=options)
         if nameTree:
             writeTree = open(nameTree, 'wb') # Indicamos el valor 'w'.
             writeTree.write(str(len(self.puntos)) + '\n')
@@ -222,10 +223,9 @@ class Ventana(QMainWindow, form_class):
         hasta el momento se eliminara, y solamente aparecera el nuevo grafo
         con el que se podra seguir trabajando normalmente
          '''
-        filename = QFileDialog.getOpenFileName(self,
-                                                     'Abrir archivo',
-                                                     '/home',
-                                                     "(*.txt)")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        filename, _ = QFileDialog.getOpenFileName(           self,"QFileDialog.getOpenFileName()","","Archivos de Texto (*.txt)",options=options)
         if filename:
             self.limpiarLienzo()
             regTree = open(filename, "r")
@@ -283,10 +283,9 @@ class Ventana(QMainWindow, form_class):
         hasta el momento se eliminara, y solamente aparecera el nuevo grafo
         con el que se podra seguir trabajando normalmente
          '''
-        filename = QFileDialog.getOpenFileName(self,
-                                                     'Abrir archivo',
-                                                     '/home',
-                                                     "(*.bin)")
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        filename, _ = QFileDialog.getOpenFileName(           self,"QFileDialog.getOpenFileName()","","Archivos Binarios (*.bin)",options=options)
         if filename:
             self.limpiarLienzo()
             regTree = open(filename, "rb")
