@@ -1,8 +1,9 @@
 import sys
 import copy
-from PyQt4 import QtCore, QtGui, uic
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+from PyQt5 import QtCore, QtGui, uic
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 from Punto import Punto
 from Grafo import Grafo
 from Arista import Arista
@@ -20,7 +21,7 @@ class Ventana(QMainWindow, form_class):
     ademas se adicionan otros objetos para las funciones necesarias del programa
     '''
     def __init__(self, parent=None):
-        QtGui.QMainWindow.__init__(self, parent)
+        QMainWindow.__init__(self, parent)
         self.numerodenodos = 0
         self.setupUi(self)
         self.lienzoGraphic = LienzoDibujo(self)
@@ -28,18 +29,18 @@ class Ventana(QMainWindow, form_class):
         self.center = QPoint()
         self.mousePunto = QPoint()
         self.textPeso.setValidator(QtGui.QDoubleValidator())
-        
-        
+
+
         self.aboutDialog = AboutDialogWindow()
         self.aboutDialog.setHidden = False
-        
-        
-        self.about = QtGui.QAction('Acerca De',self)
-        self.saveasTXT = QtGui.QAction('Guardar Grafo(txt)', self)
-        self.saveasBin = QtGui.QAction('Guardar Grafo(bin)',self)
-        self.openTXT = QtGui.QAction('Abrir Grafo(txt)', self)
-        self.openBin = QtGui.QAction('Abrir Grafo(bin)',self)
-        
+
+
+        self.about = QAction('Acerca De',self)
+        self.saveasTXT = QAction('Guardar Grafo(txt)', self)
+        self.saveasBin = QAction('Guardar Grafo(bin)',self)
+        self.openTXT = QAction('Abrir Grafo(txt)', self)
+        self.openBin = QAction('Abrir Grafo(bin)',self)
+
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&Archivo')
         fileMenu.addAction(self.openTXT)
@@ -48,18 +49,18 @@ class Ventana(QMainWindow, form_class):
         fileMenu.addAction(self.saveasBin)
         helpMenu = menubar.addMenu('&Ayuda')
         helpMenu.addAction(self.about)
-        
-        
-        self.connect(self.saveasTXT, QtCore.SIGNAL('triggered()'), self.savetxtDialog)
-        self.connect(self.saveasBin, QtCore.SIGNAL('triggered()'), self.savebinDialog)
-        self.connect(self.openTXT, QtCore.SIGNAL('triggered()'), self.opentxtDialog)
-        self.connect(self.openBin, QtCore.SIGNAL('triggered()'), self.openbinDialog)
-        self.connect(self.about, QtCore.SIGNAL('triggered()'), self.dialogAbout)
-        
+
+
+        self.saveasTXT.triggered.connect(self.savetxtDialog)
+        self.saveasBin.triggered.connect(self.savebinDialog)
+        self.openTXT.triggered.connect(self.opentxtDialog)
+        self.openBin.triggered.connect(self.openbinDialog)
+        self.about.triggered.connect(self.dialogAbout)
+
         self.nombrePuerto.addItems(listaPuertos([]))
         self.nombrePuerto.activated['QString'].connect(self.puertoActivado)
         self.costoAnclaje.activated['QString'].connect(self.costoActivado)
-                                    
+
         self.costoAnclaje.addItems(['-Vacio-', '1000', '1500', '1200', '1600'])
         self.agregarPuerto.clicked.connect(self.lienzoGraphic.addPunto)
         self.aceptarPeso.clicked.connect(self.lienzoGraphic.addPeso)
@@ -75,20 +76,20 @@ class Ventana(QMainWindow, form_class):
         self.cantidad = 0
         self.x = ''
         self.y = ''
-    
+
     def someMessage(self):
-        self.labelMessage.setText('Seleccione un punto con click izquierdo')   
-       
+        self.labelMessage.setText('Seleccione un punto con click izquierdo')
+
     def dialogAbout(self):
         '''
-        Metodo que muestra el dialogo de en la ventana, este metodo inicia 
+        Metodo que muestra el dialogo de en la ventana, este metodo inicia
         una ventana de dialogo con la informacion de los creadores del proyecto
         '''
         showFrame = AboutDialogWindow().exec_()
-        
+
     def getGrafo(self):
         return self.grafo
-        
+
     def desactivarlinea(self):
         '''
         Este metodo desactiva las acciones de pintar recta
@@ -104,7 +105,7 @@ class Ventana(QMainWindow, form_class):
         self.lienzoGraphic.repaint()
         self.widgetPeso.setEnabled(False)
         self.labelMessage.setText('Presione click derecho en el lienzo ')
-    
+
     def unabled(self, doThis):
         '''
         Este metodo habilita y deshabilita los widgets de opciones
@@ -117,15 +118,15 @@ class Ventana(QMainWindow, form_class):
         self.lienzoLayout.setEnabled(doThis)
         self.aplicarKruskal.setEnabled(doThis)
         self.labelMessage.setText('')
-        
+
     def puertoActivado(self, text):
         '''
         Metodo para el QComboBox de Nombre del puerto
-        si el usuario selecciona un puerto de la lista 
+        si el usuario selecciona un puerto de la lista
         se agregara un item o nombre del pais al que pertenece
         el puerto selecionado
         '''
-        
+
         self.paisPuerto.clear()
         self.costoAnclaje.clear()
         if text != '-Vacio-':
@@ -135,7 +136,7 @@ class Ventana(QMainWindow, form_class):
             self.costoAnclaje.setEnabled(True)
             if self.agregarPuerto.isEnabled():
                 self.agregarPuerto.setEnabled(False)
-   
+
     def costoActivado(self, text):
         '''
         Metodo de seleccion de costo de anclaje en la opcion de adcionar
@@ -146,18 +147,18 @@ class Ventana(QMainWindow, form_class):
             self.labelMessage.setText('Presione Agregar Punto')
             self.agregarPuerto.setEnabled(True)
             self.paisPuerto.setEnabled(True)
-            
+
     def savetxtDialog(self):
         '''
         Metodo que guarda todo la informacion del grafo Rutas Maritimas
         se escribe un archivo de texto con la cantidad de puntos que
         haya en el grafo, luego se escriben las cordenadas de los punto,
-        el nombre de los puntos, y finalizado de guardar los 
+        el nombre de los puntos, y finalizado de guardar los
         puntos se ecriben las aristas, con las cordenadas de sus extremos
         y el peso de la arista como tal, el usuario debera digitar el
         nombre del archivo a guardarse, y la extension .txt o .bin
         '''
-        nameTree = QtGui.QFileDialog.getSaveFileName(self,
+        nameTree = QFileDialog.getSaveFileName(self,
                                                      "Guardar fichero",
                                                      "/home/carlos/Escritorio",
                                                      "(*.txt)")
@@ -178,18 +179,18 @@ class Ventana(QMainWindow, form_class):
                                 str(arista.puntoB.nombre) + '\n')
             writeTree.close()
             self.labelMessage.setText('El grafo se guardo satisfactoriamente')
-            
+
     def savebinDialog(self):
         '''
         Metodo que guarda todo la informacion del grafo Rutas Maritimas
         se escribe un archivo de texto con la cantidad de puntos que
         haya en el grafo, luego se escriben las cordenadas de los punto,
-        el nombre de los puntos, y finalizado de guardar los 
+        el nombre de los puntos, y finalizado de guardar los
         puntos se ecriben las aristas, con las cordenadas de sus extremos
         y el peso de la arista como tal, el usuario debera digitar el
         nombre del archivo a guardarse, y la extension .txt o .bin
         '''
-        nameTree = QtGui.QFileDialog.getSaveFileName(self,
+        nameTree = QFileDialog.getSaveFileName(self,
                                                      "Guardar fichero",
                                                      "/home/carlos/Escritorio",
                                                      "(*.bin)")
@@ -210,8 +211,8 @@ class Ventana(QMainWindow, form_class):
                                 str(arista.puntoB.nombre) + '\n')
             writeTree.close()
             self.labelMessage.setText('El grafo se guardo satisfactoriamente')
-            
-    
+
+
     def opentxtDialog(self):
         '''
         Funcion que permite abrir un archivo de texto
@@ -221,7 +222,7 @@ class Ventana(QMainWindow, form_class):
         hasta el momento se eliminara, y solamente aparecera el nuevo grafo
         con el que se podra seguir trabajando normalmente
          '''
-        filename = QtGui.QFileDialog.getOpenFileName(self,
+        filename = QFileDialog.getOpenFileName(self,
                                                      'Abrir archivo',
                                                      '/home',
                                                      "(*.txt)")
@@ -243,7 +244,7 @@ class Ventana(QMainWindow, form_class):
                             punto = Punto(x + 5, y + 5, nombre)
                             self.grafo.ingresarNodo(nombre)
                             self.puntos.append(punto)
-                            
+
                     if self.numerodenodos < i:
                         x1 = int(line[0])
                         y1 = int(line[1])
@@ -266,13 +267,13 @@ class Ventana(QMainWindow, form_class):
                 if n.nombre in nuevalista:
                     del nuevalista[nuevalista.index(n.nombre)]
             self.nombrePuerto.addItems(nuevalista)
-            
+
         self.lienzoGraphic.repaint()
         self.aplicarKruskal.setEnabled(True)
         if len(self.puntos) > 1:
             self.crearArista.setEnabled(True)
         self.nuevoGrafo.setEnabled(True)
-            
+
     def openbinDialog(self):
         '''
         Funcion que permite abrir un archivo de texto
@@ -282,7 +283,7 @@ class Ventana(QMainWindow, form_class):
         hasta el momento se eliminara, y solamente aparecera el nuevo grafo
         con el que se podra seguir trabajando normalmente
          '''
-        filename = QtGui.QFileDialog.getOpenFileName(self,
+        filename = QFileDialog.getOpenFileName(self,
                                                      'Abrir archivo',
                                                      '/home',
                                                      "(*.bin)")
@@ -326,16 +327,16 @@ class Ventana(QMainWindow, form_class):
                 if n.nombre in nuevalista:
                     del nuevalista[nuevalista.index(n.nombre)]
             self.nombrePuerto.addItems(nuevalista)
-            
+
         self.lienzoGraphic.repaint()
         self.aplicarKruskal.setEnabled(True)
         if len(self.puntos) > 1:
             self.crearArista.setEnabled(True)
         self.nuevoGrafo.setEnabled(True)
-            
+
     def limpiarLienzo(self):
         '''
-        Metodo implementado para limpiar el 
+        Metodo implementado para limpiar el
         grafo que se encuetre en el lienzo
         esto permitira crer nuevos grafos desde el principio
         '''
@@ -346,18 +347,18 @@ class Ventana(QMainWindow, form_class):
         self.grafo.aristas = []
         self.lienzoGraphic.neo = []
         self.lienzoGraphic.repaint()
-            
-        
-class LienzoDibujo(QtGui.QWidget):
+
+
+class LienzoDibujo(QWidget):
     '''
     Clase que implementa el lienzo en donde se grafica los puntos y aristas
-    del grafo, es un objeto de tipo Widget, el cual contiene metodos para 
+    del grafo, es un objeto de tipo Widget, el cual contiene metodos para
     los eventos de acciones de usuario con el mouse, este objeto tiene referencia
     del la ventana principal, lo que permite la interaccion con la interfaz externa
     '''
     def __init__(self, ventana):
         '''
-        Metodo para iniciar el widget, aqui se instancian, puntos de referencia 
+        Metodo para iniciar el widget, aqui se instancian, puntos de referencia
         de las acciones del mouse, se inicia un graficador de tipo QPainter y algunas otras
         variables necesarioas
         :ventana: es la referencia de venta principal es de tipo QWindow
@@ -365,7 +366,7 @@ class LienzoDibujo(QtGui.QWidget):
         QWidget.__init__(self)
         self.nodisponible = 0
         self.espacioOcupado = 0
-        self.copyGrafo = Grafo()            
+        self.copyGrafo = Grafo()
         self.lienzo = ventana
         self.lienzo.unabled(False)
         self.lienzo.crearArista.setEnabled(False)
@@ -383,15 +384,15 @@ class LienzoDibujo(QtGui.QWidget):
         self.neo = []
         self.x = 1
         self.y = 1
-        
- 
+
+
     def paintEvent(self, event):
         '''
         Metodo que pinta los objetos creados por el usuario, tambien este
         detecta los eventos del raton en caso de pintar arista
         Aqui se dibuja Puntos con sus respectivos nombre, Aristas con
-        los respectivos pesos, y en caso de aplicar Kruskal tambien 
-        dibuja el arbol de axpansion minima 
+        los respectivos pesos, y en caso de aplicar Kruskal tambien
+        dibuja el arbol de axpansion minima
         '''
         self.painter.begin(self)
         self.painter.setRenderHint(QPainter.Antialiasing)
@@ -399,7 +400,7 @@ class LienzoDibujo(QtGui.QWidget):
         if self.puntoenable:
             self.painter.setPen(QPen(Qt.blue))
             self.painter.drawLine(self.puntoA.x(), self.puntoA.y(), self.puntoB.x(), self.puntoB.y())
-                
+
         if not self.estado:
             for arista in self.lienzo.aristas:
                 inicial = arista.puntoA.ubicacion
@@ -416,7 +417,7 @@ class LienzoDibujo(QtGui.QWidget):
                 self.painter.drawLine(inicial.x(), inicial.y(), terminal.x(), terminal.y())
                 self.painter.setPen(QPen(Qt.red))
                 self.painter.drawText((inicial.x() + terminal.x()) / (2), (inicial.y() + terminal.y())/ (2), str(arista.peso))
-        
+
         if self.estado:
             costoTotal = 0
             for i in self.neo:
@@ -430,13 +431,13 @@ class LienzoDibujo(QtGui.QWidget):
                         self.painter.drawLine(inicial.x(), inicial.y(), terminal.x(), terminal.y())
                         self.painter.setPen(QPen(Qt.black))
                         self.painter.drawText((inicial.x() + terminal.x()) / (2), (inicial.y() + terminal.y())/ (2), str(n.peso))
-                        costoTotal = costoTotal + n.peso       
+                        costoTotal = costoTotal + n.peso
             self.lienzo.labelMessage.setText('El valor de arbol expansion minima es  ' + str(costoTotal) + 'u')
             self.lienzo.grafo = self.copyGrafo
             self.neo = []
             self.copyGrafo = Grafo()
             self.estado = False
-            
+
         for puntos in self.lienzo.puntos:
             point = puntos.getUbicacion()
             name = puntos.getNombre()
@@ -445,19 +446,19 @@ class LienzoDibujo(QtGui.QWidget):
                                   point.y() - 11,
                                   name)
             self.painter.setPen(QPen(puntos.colorPunto, 3, Qt.DashLine))
-            self.painter.drawEllipse(point, 9, 9)    
+            self.painter.drawEllipse(point, 9, 9)
         self.painter.end()
-        
+
     def mousePressEvent(self, event):
         '''
         Metodo que captura la acciones de los botones del mouse
-        cuando se quiere crear un punto aqui se guarda el punto en 
+        cuando se quiere crear un punto aqui se guarda el punto en
         donde si ha clikeado, pero este punto debe estar fuera de algo de los
         puntos si es que ya existe mas puntos, si se clumplen las condiciones
         se habilita las opciones para cargar el nombre del puerto
         que sera el nombre del punto
         Para crer arista, se camptura las acciones del boton izquierdo del mouse
-        y si se ha clikeado en alguno de los puntos, se guarda el punto 
+        y si se ha clikeado en alguno de los puntos, se guarda el punto
         como punto inicial
         '''
         if self.lienzo.crearPunto.isChecked() and event.buttons() == QtCore.Qt.RightButton:
@@ -485,9 +486,9 @@ class LienzoDibujo(QtGui.QWidget):
                     self.lienzo.labelMessage.setText('Seleccione un puerto')
                 else:
                     self.lienzo.labelMessage.setText('Hay un punto cerca de este espacio')
-            self.espacioOcupado = 0      
+            self.espacioOcupado = 0
         if self.lienzo.crearArista.isChecked() and event.buttons() == QtCore.Qt.LeftButton:
-            
+
             if self.lienzo.puntoDuo[0] is not None:
                 self.lienzo.puntoDuo[0].setColorPunto(QBrush(Qt.blue))
             if self.lienzo.puntoDuo[1] is not None:
@@ -502,20 +503,20 @@ class LienzoDibujo(QtGui.QWidget):
                     self.lienzo.labelMessage.setText('Arrastre el mouse hasta un punto')
                     if self.lienzo.puntoDuo[1] is not None:
                         self.lienzo.puntoDuo[1] = None
-    
+
     def mouseMoveEvent(self, event):
         '''
         Metodo que captura las acciones de movimiento del mouse
         cuando se esta creando una arista este metodo colecta
-        la informacion del mousePressEvent mas los movimientos 
+        la informacion del mousePressEvent mas los movimientos
         del mouse cuando el click izquierdo o derecho esta sostenido
         si los movimientos escuentran a un punto diferente al que ya se
-        guardo se activa la opcion de digitar peso para la 
+        guardo se activa la opcion de digitar peso para la
         nueva arista
         '''
         self.lienzo.contador = 0
-        
-        if self.lienzo.crearArista.isChecked() and event.buttons() == QtCore.Qt.LeftButton:     
+
+        if self.lienzo.crearArista.isChecked() and event.buttons() == QtCore.Qt.LeftButton:
             for n in self.lienzo.puntos:
                 if n != self.lienzo.puntoDuo[0]:
                     if n.ecuacionDeCirculo(event.pos()):
@@ -524,7 +525,7 @@ class LienzoDibujo(QtGui.QWidget):
                         #Prueba mover
             for n in self.lienzo.puntos:
                 if n != self.lienzo.puntoDuo[0] and n.ecuacionDeCirculo(event.pos()):
-                    self.lienzo.contador = self.lienzo.contador + 1         
+                    self.lienzo.contador = self.lienzo.contador + 1
             if self.lienzo.puntoDuo[0] is not None and self.lienzo.puntoDuo[1] is not None:
                 for m in self.lienzo.aristas:
                     if (str(m.puntoA) == str(self.lienzo.puntoDuo[0]) and
@@ -532,7 +533,7 @@ class LienzoDibujo(QtGui.QWidget):
                         str(m.puntoB) == str(self.lienzo.puntoDuo[0]) and
                         str(m.puntoA) == str(self.lienzo.puntoDuo[1])):
                         self.hayArista = self.hayArista + 1
-            
+
             if self.lienzo.contador > 0 and self.lienzo.puntoDuo[0] is not None:
                 if self.hayArista == 0:
                     self.lienzo.widgetPeso.setEnabled(True)
@@ -546,18 +547,18 @@ class LienzoDibujo(QtGui.QWidget):
                     self.lienzo.labelMessage.setText('Arrastre el mouse hasta un punto')
                 if self.lienzo.puntoDuo[1] is not None:
                     self.lienzo.puntoDuo[1].setColorPunto(QBrush(Qt.blue))
-                    
-                                  
+
+
             if self.lienzo.puntoDuo[0] != None:
                 self.puntoA = QPoint(self.lienzo.x, self.lienzo.y)
                 self.puntoB = event.pos()
-                self.puntoenable = True   
-                
+                self.puntoenable = True
+
                 self.repaint()
             self.lienzo.contador = 0
             self.hayArista = 0
         self.repaint()
-                
+
     def cambiarGrafo(self, nuevo):
         '''
         Metodd secundario que se utiliza para la funcion de aplicarKruskal
@@ -574,13 +575,13 @@ class LienzoDibujo(QtGui.QWidget):
                 self.neo.append(n)
         self.estado = True
         self.repaint()
-            
+
     def addPunto(self):
         '''
         Metodo para adicionar puntos en el lienzo
         este metodo se ejecuta con la accion del boton AgregarPunto
         el cual insancia un objeto de tipo Punto
-        con la ubicacion y el nombre del punto, y aqui tambien 
+        con la ubicacion y el nombre del punto, y aqui tambien
         se agrega un nodo al grafo
         '''
         punto = Punto(self.punto.x(),
@@ -603,7 +604,7 @@ class LienzoDibujo(QtGui.QWidget):
         self.lienzo.nombrePuerto.setCurrentIndex(0)
         self.lienzo.labelMessage.setText('Se adiciono un punto')
         self.repaint()
-        
+
     def addPeso(self):
         '''
         Metodo que permite ingresar una arista, cuando se tiene referenciados
@@ -711,16 +712,16 @@ class AboutDialogWindow(QDialog):
         contenedor.addWidget(labelInfo)
         contenedor.addWidget(labelUn)
         contenedor.addWidget(labelTime)
-      
+
 
 if __name__ == "__main__":
     '''
     Inicio principal de la ventana y las clases para la ejecucion del programa
     '''
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     MyWindow = Ventana(None)
     MyWindow.setWindowTitle(('Rutas Maritimas').center(150, " "))
-    screen = QtGui.QDesktopWidget().screenGeometry()
+    screen = QDesktopWidget().screenGeometry()
     size = MyWindow.geometry()
     MyWindow.move((screen.width() - size.width())/2, (screen.height() - size.height())/2)
     MyWindow.show()
