@@ -1,0 +1,15 @@
+6
+129|83|Los Angeles
+343|245|New Orleans
+478|79|San Diego
+91|253|Vancouyer
+289|77|Montreal
+444|345|Toronto
+478|79|343|245|2.0|San Diego|New Orleans
+444|345|478|79|3.0|Toronto|San Diego
+444|345|91|253|4.0|Toronto|Vancouyer
+129|83|343|245|3.0|Los Angeles|New Orleans
+289|77|478|79|4.0|Montreal|San Diego
+343|245|444|345|5.0|New Orleans|Toronto
+91|253|289|77|3.0|Vancouyer|Montreal
+91|253|478|79|4.0|Vancouyer|San Diego

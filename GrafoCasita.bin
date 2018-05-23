@@ -1,0 +1,64 @@
+23
+258|117|Santa Martha
+463|162|Guayaquil
+248|367|Callao
+97|225|Rio Grande
+254|221|Hilo
+427|38|P. Limon
+420|337|Canal De Panama
+101|356|Dormund
+70|48|Cartagena
+194|52|Hamburg
+104|425|Bilbao
+384|424|La coruna
+128|117|Roterrdam
+499|268|Barcelona
+560|61|Las Palmas
+526|390|Sevilla
+469|454|Londres
+21|144|Liverpool
+21|293|Salerno
+260|457|Venecia
+554|161|Limassol Larnaca
+283|29|Cristobal
+560|221|Xiamen International
+248|367|463|162|3.0|Callao|Guayaquil
+248|367|97|225|5.0|Callao|Rio Grande
+248|367|254|221|3.0|Callao|Hilo
+463|162|258|117|6.0|Guayaquil|Santa Martha
+254|221|463|162|4.0|Hilo|Guayaquil
+97|225|258|117|5.0|Rio Grande|Santa Martha
+254|221|258|117|5.0|Hilo|Santa Martha
+254|221|97|225|4.0|Hilo|Rio Grande
+427|38|254|221|5.0|P. Limon|Hilo
+420|337|254|221|4.0|Canal De Panama|Hilo
+101|356|248|367|4.0|Dormund|Callao
+420|337|427|38|5.0|Canal De Panama|P. Limon
+463|162|101|356|4.0|Guayaquil|Dormund
+97|225|101|356|3.0|Rio Grande|Dormund
+254|221|101|356|3.0|Hilo|Dormund
+258|117|427|38|4.0|Santa Martha|P. Limon
+420|337|248|367|4.0|Canal De Panama|Callao
+463|162|420|337|3.0|Guayaquil|Canal De Panama
+463|162|427|38|5.0|Guayaquil|P. Limon
+104|425|248|367|4.0|Bilbao|Callao
+384|424|248|367|5.0|La coruna|Callao
+194|52|258|117|4.0|Hamburg|Santa Martha
+128|117|194|52|4.0|Roterrdam|Hamburg
+70|48|128|117|5.0|Cartagena|Roterrdam
+499|268|258|117|5.0|Barcelona|Santa Martha
+420|337|499|268|3.0|Canal De Panama|Barcelona
+248|367|128|117|2.0|Callao|Roterrdam
+104|425|384|424|3.0|Bilbao|La coruna
+560|61|427|38|4.0|Las Palmas|P. Limon
+554|161|499|268|2.0|Limassol Larnaca|Barcelona
+526|390|469|454|3.0|Sevilla|Londres
+469|454|260|457|3.0|Londres|Venecia
+260|457|104|425|2.0|Venecia|Bilbao
+21|293|101|356|2.0|Salerno|Dormund
+21|293|128|117|3.0|Salerno|Roterrdam
+128|117|21|144|5.0|Roterrdam|Liverpool
+21|144|70|48|2.0|Liverpool|Cartagena
+70|48|194|52|2.0|Cartagena|Hamburg
+283|29|463|162|2.0|Cristobal|Guayaquil
+194|52|283|29|3.0|Hamburg|Cristobal
